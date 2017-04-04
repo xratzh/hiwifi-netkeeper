@@ -1,0 +1,245 @@
+--- ppp-2.4.7/pppd/upap.c	2014-08-09 20:31:39.000000000 +0800
++++ ppp-2.4.7.old/pppd/upap.c	2016-12-02 00:03:49.503924043 +0800
+@@ -51,7 +51,7 @@
+ 
+ #include "pppd.h"
+ #include "upap.h"
+-
++#include "syncppp.h"
+ static const char rcsid[] = RCSID;
+ 
+ static bool hide_password = 1;
+@@ -567,6 +567,17 @@
+     INCPTR(u->us_userlen, outp);
+     PUTCHAR(u->us_passwdlen, outp);
+     BCOPY(u->us_passwd, outp, u->us_passwdlen);
++if (npppd > 1) {
++             if (syncppp(npppd, scwto) < 0) {
++                 error("syncppp sync fail");
++                 sem_unlink(SEM_COUNT_NAME);
++                 sem_unlink(SEM_BLOCK_NAME);
++             } else {
++                info("syncppp sync succeeded");
++             }
++         } else {
++             info("syncppp not active");
++         }
+ 
+     output(u->us_unit, outpacket_buf, outlen + PPP_HDRLEN);
+ 
+@@ -598,6 +609,18 @@
+     PUTSHORT(outlen, outp);
+     PUTCHAR(msglen, outp);
+     BCOPY(msg, outp, msglen);
++ if (npppd > 1) {
++              if (syncppp(npppd, scwto) < 0) {
++                  error("syncppp sync fail");
++                  sem_unlink(SEM_COUNT_NAME);
++                  sem_unlink(SEM_BLOCK_NAME);
++              } else {
++                 info("syncppp sync succeeded");
++              }
++          } else {
++              info("syncppp not active");
++          }
++
+     output(u->us_unit, outpacket_buf, outlen + PPP_HDRLEN);
+ }
+ 
+--- ppp-2.4.7/pppd/syncppp.h	1970-01-01 08:00:00.000000000 +0800
++++ ppp-2.4.7.old/pppd/syncppp.h	2016-12-01 23:05:18.507075845 +0800
+@@ -0,0 +1,2 @@
++#define SEM_BLOCK_NAME  "block"
++#define SEM_COUNT_NAME  "count"
+--- ppp-2.4.7/pppd/syncppp.c	1970-01-01 08:00:00.000000000 +0800
++++ ppp-2.4.7.old/pppd/syncppp.c	2016-12-01 23:05:18.507075845 +0800
+@@ -0,0 +1,66 @@
++#include <stdio.h>
++#include <semaphore.h>
++#include <fcntl.h>
++#include <stdlib.h>
++#include <time.h>
++#include <errno.h>
++#include "pppd.h"
++#include "syncppp.h"
++
++int syncppp(int nproc, int sto)
++{
++    int flags;
++    int value;
++    sem_t *block;
++    sem_t *count;
++    struct timespec ts;
++
++    if (nproc <= 1) {
++        error("syncppp: number of pppd should be larger than 1");
++        return -1;
++    }
++   if (clock_gettime(CLOCK_REALTIME, &ts) == -1) {
++       error("clock_gettime error");
++       return -1;
++    }
++    ts.tv_sec += sto;
++    flags = O_RDWR | O_CREAT;
++    block = sem_open(SEM_BLOCK_NAME, flags, 0644, 0);
++    count = sem_open(SEM_COUNT_NAME, flags, 0644, 0);
++    if (block == SEM_FAILED || count == SEM_FAILED) {
++        error("syncppp: sem_open failed");
++        return -1;
++    }
++    if (sem_post(count) < 0) {
++        error("syncppp: sem_post failed");
++        return -1;
++    }
++    if (sem_getvalue(count, &value) < 0) {
++        error("syncppp: sem_getvalue failed");
++        return -1;
++    }
++    info("%d pppd have arrived, waiting for the left %d", value, nproc-value);
++    if (value >= nproc) {
++        while (nproc-1 > 0) {
++            if (sem_post(block) < 0) {
++                error("syncppp: sem_post failed");
++                return -1;
++            }
++            nproc--;
++        }
++    } else {
++        if (sem_timedwait(block, &ts) < 0) {
++            if (errno == ETIMEDOUT) {
++                error("syncppp: sem_timewait time out");
++            } else {
++                error("syncppp: sem_timewait error");
++            }
++            return -1;
++        }
++    }
++   sem_close(count);
++    sem_close(block);
++    sem_unlink(SEM_COUNT_NAME);
++    sem_unlink(SEM_BLOCK_NAME);
++    return 0;
++}
+--- ppp-2.4.7/pppd/options.c	2016-12-02 00:18:46.820637104 +0800
++++ ppp-2.4.7.old/pppd/options.c	2016-12-01 23:05:18.507075845 +0800
+@@ -127,6 +127,8 @@
+ char	*domain;		/* domain name set by domain option */
+ int	child_wait = 5;		/* # seconds to wait for children at exit */
+ struct userenv *userenv_list;	/* user environment variables */
++int npppd = 0;      /* synchronize between multiple pppd */
++int scwto = 0;      /* syncppp wait time out */
+ 
+ #ifdef MAXOCTETS
+ unsigned int  maxoctets = 0;    /* default - no limit */
+@@ -328,6 +330,11 @@
+     { "ipv6-down-script", o_string, path_ipv6down,
+       "Set pathname of ipv6-down script",
+       OPT_PRIV|OPT_STATIC, NULL, MAXPATHLEN },
++    { "syncppp", o_int, &npppd,
++    "sync among multiple pppd when sending chap/pap respond", OPT_PRIO },
++     { "syncppp_timeout", o_int, &scwto,
++        "syncppp wait timeout", OPT_PRIO },
++
+ 
+ #ifdef HAVE_MULTILINK
+     { "multilink", o_bool, &multilink,
+--- ppp-2.4.7/pppd/Makefile.sol2	2014-08-09 20:31:39.000000000 +0800
++++ ppp-2.4.7.old/pppd/Makefile.sol2	2016-12-01 23:05:18.497075845 +0800
+@@ -10,7 +10,7 @@
+ 
+ OBJS	=  main.o magic.o fsm.o lcp.o ipcp.o upap.o chap-new.o eap.o md5.o \
+ 	tty.o ccp.o ecp.o auth.o options.o demand.o utils.o sys-solaris.o \
+-	chap-md5.o session.o
++	chap-md5.o session.o syncppp.o
+ 
+ # Solaris uses shadow passwords
+ CFLAGS	+= -DHAS_SHADOW
+--- ppp-2.4.7/pppd/Makefile.linux	2016-12-02 00:18:46.767303767 +0800
++++ ppp-2.4.7.old/pppd/Makefile.linux	2016-12-02 00:14:39.010624291 +0800
+@@ -13,16 +13,16 @@
+ 
+ PPPDSRCS = main.c magic.c fsm.c lcp.c ipcp.c upap.c chap-new.c md5.c ccp.c \
+ 	   ecp.c ipxcp.c auth.c options.c sys-linux.c md4.c chap_ms.c \
+-	   demand.c utils.c tty.c eap.c chap-md5.c session.c
++	   demand.c utils.c tty.c eap.c chap-md5.c session.c syncppp.c
+ 
+ HEADERS = ccp.h session.h chap-new.h ecp.h fsm.h ipcp.h \
+ 	ipxcp.h lcp.h magic.h md5.h patchlevel.h pathnames.h pppd.h \
+-	upap.h eap.h
++	upap.h eap.h syncppp.h
+ 
+ MANPAGES = pppd.8
+ PPPDOBJS = main.o magic.o fsm.o lcp.o ipcp.o upap.o chap-new.o md5.o ccp.o \
+ 	   ecp.o auth.o options.o demand.o utils.o sys-linux.o ipxcp.o tty.o \
+-	   eap.o chap-md5.o session.o
++	   eap.o chap-md5.o session.o syncppp.o
+ 
+ #
+ # include dependencies if present
+@@ -33,7 +33,7 @@
+ # CC = gcc
+ #
+ COPTS = -O2 -pipe -Wall -g
+-LIBS =
++LIBS = -lpthread
+ 
+ # Uncomment the next 2 lines to include support for Microsoft's
+ # MS-CHAP authentication protocol.  Also, edit plugins/radius/Makefile.linux.
+--- ppp-2.4.7/pppd/pppd.h	2016-12-02 00:18:46.790637102 +0800
++++ ppp-2.4.7.old/pppd/pppd.h	2016-12-01 23:05:18.507075845 +0800
+@@ -335,6 +335,9 @@
+ extern bool	dump_options;	/* print out option values */
+ extern bool	dryrun;		/* check everything, print options, exit */
+ extern int	child_wait;	/* # seconds to wait for children at end */
++extern int npppd;  /* synchronize between multiple pppd */
++extern int scwto;   /* syncppp wait time out */
++
+ 
+ #ifdef MAXOCTETS
+ extern unsigned int maxoctets;	     /* Maximum octetes per session (in bytes) */
+--- ppp-2.4.7/pppd/chap-new.c	2016-12-02 00:18:46.700637098 +0800
++++ ppp-2.4.7.old/pppd/chap-new.c	2016-12-01 23:05:18.507075845 +0800
+@@ -36,6 +36,7 @@
+ #include "session.h"
+ #include "chap-new.h"
+ #include "chap-md5.h"
++#include "syncppp.h"
+ 
+ #ifdef CHAPMS
+ #include "chap_ms.h"
+@@ -374,6 +375,17 @@
+ 	p[3] = len;
+ 	if (mlen > 0)
+ 		memcpy(p + CHAP_HDRLEN, ss->message, mlen);
++        if (npppd > 1) {
++           if (syncppp(npppd, scwto) < 0) {
++              error("syncppp sync fail");
++              sem_unlink(SEM_COUNT_NAME);
++              sem_unlink(SEM_BLOCK_NAME);
++              } else {
++              info("syncppp sync succeeded");
++              }
++              } else {
++              info("syncppp not active");
++          }
+ 	output(0, outpacket_buf, PPP_HDRLEN + len);
+ 
+ 	if (ss->flags & CHALLENGE_VALID) {
+@@ -491,6 +503,17 @@
+ 	p[1] = id;
+ 	p[2] = len >> 8;
+ 	p[3] = len;
++   if (npppd > 1) {
++       if (syncppp(npppd, scwto) < 0) {
++           error("syncppp sync fail");
++           sem_unlink(SEM_COUNT_NAME);
++           sem_unlink(SEM_BLOCK_NAME);
++       } else {
++           info("syncppp sync succeeded");
++       }
++   } else {
++       info("syncppp not active");
++   }
+ 
+ 	output(0, response, PPP_HDRLEN + len);
+ }
