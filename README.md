@@ -4,7 +4,7 @@
 
  - 感谢miao师傅和chen的贡献[源码在此](https://github.com/miao1007/Openwrt-NetKeeper)
  
-# 用法：  
+# hiwifi用法如下：  
 
  ```
  curl -kso install.sh https://raw.githubusercontent.com/xratzh/hiwifi-netkeeper/master/install.sh
