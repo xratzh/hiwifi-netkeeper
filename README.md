@@ -7,9 +7,16 @@
 # hiwifi用法如下：  
 
  ```
- curl -kso install.sh https://raw.githubusercontent.com/xratzh/hiwifi-netkeeper/master/install.sh
- chmod +x install.sh && sh install.sh
+ curl -kso install.sh https://raw.githubusercontent.com/xratzh/hiwifi-netkeeper/master/hiwifi_install.sh
+ chmod +x hiwifi_install.sh && sh hiwifi_install.sh
  ```
+## ARM使用方法：
+
+```
+ curl -kso install.sh https://raw.githubusercontent.com/xratzh/hiwifi-netkeeper/master/arm_install.sh
+ chmod +x arm_install.sh && sh arm_install.sh
+```
+
  ---
 
 # 手动使用说明： 
@@ -19,6 +26,7 @@
 
 - 把对应的so文件下载后放入路由器里面，我是这样放的：/jffs/pppd/你的省份的so文件名  
 - 拨号选用pppoe，在高级设置里面这样填写：plugin /jffs/pppd/你的省份的so文件名   
+- 拨号命令：killall pppd && /usr/sbin/pppd file /tmp/ppp/options.wan0
 
 2、 mipsel2.4.5下面是MT7620系列的so文件，本版本是自己编译的2.4.5版本的，和极路由的pppd版本相匹配的，~未测试2.4.7是否能用~经测试不能使用，这是极路由pppd2.4.5专用。  
 
