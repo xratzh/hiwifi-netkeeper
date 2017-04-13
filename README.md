@@ -10,7 +10,7 @@
  curl -kso install.sh https://raw.githubusercontent.com/xratzh/hiwifi-netkeeper/master/hiwifi_install.sh
  chmod +x hiwifi_install.sh && sh hiwifi_install.sh
  ```
-## ARM使用方法：
+# ARM使用方法：
 
 ```
  curl -kso install.sh https://raw.githubusercontent.com/xratzh/hiwifi-netkeeper/master/arm_install.sh
