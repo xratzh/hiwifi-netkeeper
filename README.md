@@ -7,13 +7,13 @@
 # hiwifi用法如下：  
 
  ```
- curl -kso install.sh https://raw.githubusercontent.com/xratzh/hiwifi-netkeeper/master/hiwifi_install.sh
+ curl -kso hiwifi_install.sh https://raw.githubusercontent.com/xratzh/hiwifi-netkeeper/master/hiwifi_install.sh
  chmod +x hiwifi_install.sh && sh hiwifi_install.sh
  ```
 # ARM使用方法：
 
 ```
- curl -kso install.sh https://raw.githubusercontent.com/xratzh/hiwifi-netkeeper/master/arm_install.sh
+ curl -kso arm_install.sh https://raw.githubusercontent.com/xratzh/hiwifi-netkeeper/master/arm_install.sh
  chmod +x arm_install.sh && sh arm_install.sh
 ```
 
