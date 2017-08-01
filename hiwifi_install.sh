@@ -19,61 +19,62 @@ echo "或者ctrl+c退出"
 read so
 if [ $so = 1 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/chongqing0094_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/chongqing0094_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/chongqing0094_sxplugin.so -o /usr/lib/pppd/2.4.5/chongqing0094_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/chongqing0094_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin chongqing0094_sxplugin.so'" /etc/config/network
 elif [ $so = 2 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/chongqing_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/chongqing_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/chongqing_sxplugin.so -o  /usr/lib/pppd/2.4.5/chongqing_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/chongqing_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin chongqing_sxplugin.so'" /etc/config/network
 elif [ $so = 3 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/gansu_telecom_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/gansu_telecom_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/gansu_telecom_sxplugin.so -o /usr/lib/pppd/2.4.5/gansu_telecom_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/gansu_telecom_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin gansu_telecom_sxplugin.so'" /etc/config/network
 elif [ $so = 4 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/hainan_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/hainan_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/hainan_sxplugin.so -o  /usr/lib/pppd/2.4.5/hainan_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/hainan_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin hainan_sxplugin.so'" /etc/config/network
 elif [ $so = 5 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/hebei_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/hebei_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/hebei_sxplugin.so -o /usr/lib/pppd/2.4.5/hebei_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/hebei_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin hebei_sxplugin.so'" /etc/config/network
 elif [ $so = 6 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/hubei_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/hubei_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/hubei_sxplugin.so -o /usr/lib/pppd/2.4.5/hubei_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/hubei_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin hubei_sxplugin.so'" /etc/config/network
 elif [ $so = 7 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/qinghai_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/qinghai_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/qinghai_sxplugin.so -o /usr/lib/pppd/2.4.5/qinghai_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/qinghai_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin qinghai_sxplugin.so'" /etc/config/network
 elif [ $so = 8 ]
-then curl -kso /usr/lib/pppd/2.4.5/shandongmobile_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/shandongmobile_sxplugin.so
-     chmod +x /usr/lib/pppd/2.4.5/shandongmobile_sxplugin.so
-     sed -i "15a \        \option pppd_options 'plugin shandongmobile_sxplugin.so'" /etc/config/network
+then 
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/shandongmobile_sxplugin.so -o /usr/lib/pppd/2.4.5/shandongmobile_sxplugin.so
+    chmod +x /usr/lib/pppd/2.4.5/shandongmobile_sxplugin.so
+    sed -i "15a \        \option pppd_options 'plugin shandongmobile_sxplugin.so'" /etc/config/network
 elif [ $so = 9 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/shanxi_yixun_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/shanxi_yixun_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/shanxi_yixun_sxplugin.so -o /usr/lib/pppd/2.4.5/shanxi_yixun_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/shanxi_yixun_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin shanxi_yixun_sxplugin.so'" /etc/config/network
 elif [ $so = 10 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/xinjiang_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/xinjiang_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/xinjiang_sxplugin.so -o /usr/lib/pppd/2.4.5/xinjiang_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/xinjiang_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin xinjiang_sxplugin.so'" /etc/config/network
 elif [ $so = 11 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/zhejiang_qiye_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/zhejiang_qiye_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/zhejiang_qiye_sxplugin.so -o /usr/lib/pppd/2.4.5/zhejiang_qiye_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/zhejiang_qiye_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin zhejiang_qiye_sxplugin.so'" /etc/config/network
 elif [ $so = 12 ]
 then
-    curl -kso /usr/lib/pppd/2.4.5/zhejiang_xiaoyuan_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/zhejiang_xiaoyuan_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/mipsel2.4.5/zhejiang_xiaoyuan_sxplugin.so -o /usr/lib/pppd/2.4.5/zhejiang_xiaoyuan_sxplugin.so
     chmod +x /usr/lib/pppd/2.4.5/zhejiang_xiaoyuan_sxplugin.so
     sed -i "15a \        \option pppd_options 'plugin zhejiang_xiaoyuan_sxplugin.so'" /etc/config/network
 else
