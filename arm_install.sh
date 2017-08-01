@@ -19,61 +19,62 @@ echo "或者ctrl+c退出"
 read so
 if [ $so = 1 ]
 then
-    curl -kso /usr/lib/pppd/chongqing0094_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/chongqing0094_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/chongqing0094_sxplugin.so -o /usr/lib/pppd/chongqing0094_sxplugin.so
     chmod +x /usr/lib/pppd/chongqing0094_sxplugin.so
     echo "plugin chongqing0094_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 2 ]
 then
-    curl -kso /usr/lib/pppd/chongqing_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/chongqing_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/chongqing_sxplugin.so -o /usr/lib/pppd/chongqing_sxplugin.so
     chmod +x /usr/lib/pppd/chongqing_sxplugin.so
     echo "plugin chongqing_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 3 ]
 then
-    curl -kso /usr/lib/pppd/gansu_telecom_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/gansu_telecom_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/gansu_telecom_sxplugin.so -o /usr/lib/pppd/gansu_telecom_sxplugin.so
     chmod +x /usr/lib/pppd/gansu_telecom_sxplugin.so
     echo "plugin gansu_telecom_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 4 ]
 then
-    curl -kso /usr/lib/pppd/hainan_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/hainan_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/hainan_sxplugin.so -o /usr/lib/pppd/hainan_sxplugin.so
     chmod +x /usr/lib/pppd/hainan_sxplugin.so
     echo "plugin hainan_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 5 ]
 then
-    curl -kso /usr/lib/pppd/hebei_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/hebei_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/hebei_sxplugin.so -o /usr/lib/pppd/hebei_sxplugin.so
     chmod +x /usr/lib/pppd/hebei_sxplugin.so
     echo "plugin hebei_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 6 ]
 then
-    curl -kso /usr/lib/pppd/hubei_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/hubei_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/hubei_sxplugin.so -o /usr/lib/pppd/hubei_sxplugin.so
     chmod +x /usr/lib/pppd/hubei_sxplugin.so
     echo "plugin hubei_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 7 ]
 then
-    curl -kso /usr/lib/pppd/qinghai_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/qinghai_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/qinghai_sxplugin.so -o /usr/lib/pppd/qinghai_sxplugin.so
     chmod +x /usr/lib/pppd/qinghai_sxplugin.so
     echo "plugin qinghai_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 8 ]
-then curl -kso /usr/lib/pppd/shandongmobile_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/shandongmobile_sxplugin.so
-     chmod +x /usr/lib/pppd/shandongmobile_sxplugin.so
-     echo "plugin shandongmobile_sxplugin.so" >> /tmp/ppp/options.wan0
+then 
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/shandongmobile_sxplugin.so -o /usr/lib/pppd/shandongmobile_sxplugin.so
+    chmod +x /usr/lib/pppd/shandongmobile_sxplugin.so
+    echo "plugin shandongmobile_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 9 ]
 then
-    curl -kso /usr/lib/pppd/shanxi_yixun_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/shanxi_yixun_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/shanxi_yixun_sxplugin.so -o /usr/lib/pppd/shanxi_yixun_sxplugin.so
     chmod +x /usr/lib/pppd/shanxi_yixun_sxplugin.so
     echo "plugin shanxi_yixun_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 10 ]
 then
-    curl -kso /usr/lib/pppd/xinjiang_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/xinjiang_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/xinjiang_sxplugin.so -o /usr/lib/pppd/xinjiang_sxplugin.so
     chmod +x /usr/lib/pppd/xinjiang_sxplugin.so
     echo "plugin xinjiang_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 11 ]
 then
-    curl -kso /usr/lib/pppd/zhejiang_qiye_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/zhejiang_qiye_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/zhejiang_qiye_sxplugin.so -o /usr/lib/pppd/zhejiang_qiye_sxplugin.so
     chmod +x /usr/lib/pppd/zhejiang_qiye_sxplugin.so
     echo "plugin zhejiang_qiye_sxplugin.so" >> /tmp/ppp/options.wan0
 elif [ $so = 12 ]
 then
-    curl -kso /usr/lib/pppd/zhejiang_xiaoyuan_sxplugin.so https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/zhejiang_xiaoyuan_sxplugin.so
+    curl -L https://raw.githubusercontent.com/xratzh/hiwif-netkeeper/arm2.4.7/zhejiang_xiaoyuan_sxplugin.so -o /usr/lib/pppd/zhejiang_xiaoyuan_sxplugin.so
     chmod +x /usr/lib/pppd/zhejiang_xiaoyuan_sxplugin.so
     echo "plugin zhejiang_xiaoyuan_sxplugin.so" >> /tmp/ppp/options.wan0
 else
